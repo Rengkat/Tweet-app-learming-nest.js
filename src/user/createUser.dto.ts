@@ -1,50 +1,49 @@
 import {
-  isBoolean,
+  IsBoolean,
   IsDate,
-  isEmail,
-  IsIn,
-  isNotEmpty,
+  IsEmail,
+  IsNotEmpty,
   IsNumber,
-  isNumber,
   IsOptional,
   IsString,
-  isStrongPassword,
+  IsStrongPassword,
   Length,
 } from 'class-validator';
 import { createProfileDto } from 'src/profile/dtos/creatProfile.dto';
 
 export class createUserDto {
   @IsString()
-  @isNotEmpty({ messsage: 'First name cannot be empty' })
+  @IsNotEmpty({ message: 'First name cannot be empty' })
   firstName: string;
 
   @IsString()
-  @isNotEmpty({ messsage: 'surname cannot be empty' })
+  @IsNotEmpty({ message: 'Surname cannot be empty' })
   surname: string;
 
+  @IsOptional()
   @IsDate()
   dateOfBirth?: Date;
 
-  @isBoolean()
+  @IsOptional()
+  @IsBoolean()
   isMarried?: boolean;
 
   @IsString()
-  @isNotEmpty({ messsage: 'First name cannot be empty' })
-  @isStrongPassword()
-  @Length(6, 12, {
-    message:
-      'Password must be more that 6 characters and less than 20 characters',
+  @IsNotEmpty({ message: 'Password cannot be empty' })
+  @IsStrongPassword()
+  @Length(6, 20, {
+    message: 'Password must be 6-20 characters',
   })
   password: string;
 
-  @isEmail()
-  @isNotEmpty()
+  @IsEmail()
+  @IsNotEmpty()
   email: string;
 
-  @isNumber()
-  @isNotEmpty()
+  @IsNumber()
+  @IsNotEmpty()
   id: number;
 
   @IsOptional()
-  profile: createProfileDto | null;
+  profile?: createProfileDto;
 }

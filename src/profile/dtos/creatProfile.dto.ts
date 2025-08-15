@@ -1,43 +1,47 @@
 import {
+  IsBoolean,
   isBoolean,
   IsDate,
+  IsEmail,
   isEmail,
   IsIn,
+  IsNotEmpty,
   isNotEmpty,
   IsNumber,
   isNumber,
   IsString,
+  IsStrongPassword,
   isStrongPassword,
   Length,
 } from 'class-validator';
 
 export class createProfileDto {
   @IsString()
-  @isNotEmpty()
+  @IsNotEmpty()
   firstName: string;
 
   @IsString()
-  @isNotEmpty()
+  @IsNotEmpty()
   surname: string;
 
   @IsDate()
   dateOfBirth?: Date;
 
-  @isBoolean()
+  @IsBoolean()
   isMarried?: boolean;
 
   @IsString()
-  @isNotEmpty()
-  @isStrongPassword()
+  @IsNotEmpty()
+  @IsStrongPassword()
   @Length(6, 12)
   password: string;
 
-  @isEmail()
-  @isNotEmpty()
+  @IsEmail()
+  @IsNotEmpty()
   email: string;
 
-  @isNumber()
-  @isNotEmpty()
+  @IsNumber()
+  @IsNotEmpty()
   id: number;
 
   @IsString()

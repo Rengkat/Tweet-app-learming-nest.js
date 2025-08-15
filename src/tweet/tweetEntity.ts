@@ -27,7 +27,6 @@ export class Tweets {
   // @JoinColumn() no need of joint column
   user: User;
 
-  @IsOptional()
   @Column({
     nullable: true,
   })
