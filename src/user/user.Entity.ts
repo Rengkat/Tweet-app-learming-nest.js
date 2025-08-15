@@ -14,40 +14,23 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    length: 100,
-  })
+  @Column({ type: 'varchar', length: 100, nullable: false })
   firstName: string;
 
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    length: 100,
-  })
+  @Column({ type: 'varchar', length: 100, nullable: false })
   surname: string;
 
-  @Column({
-    type: 'varchar',
-    length: 100,
-    nullable: false,
-  })
+  @Column({ type: 'varchar', length: 100, nullable: false })
   password: string;
 
-  @Column({
-    nullable: false,
-    unique: true,
-    type: 'varchar',
-  })
+  @Column({ type: 'varchar', unique: true, nullable: false })
   email: string;
 
   @OneToOne(() => Profile, (profile) => profile.user, {
-    cascade: ['insert'],
-    eager: true, //fetch related profile
-  }) // the profileId will be a foreign key
-  // @JoinColumn()
-  profile?: Profile;
+    cascade: ['insert', 'update'],
+    eager: true,
+  })
+  profile: Profile;
 
   @OneToMany(() => Tweets, (tweet) => tweet.user)
   tweets: Tweets[];
