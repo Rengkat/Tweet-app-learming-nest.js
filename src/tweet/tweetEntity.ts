@@ -32,11 +32,16 @@ export class Tweets {
   })
   image?: string;
 
+  @Column({ type: 'json', nullable: true })
+  reactions: {
+    likes: number;
+    retweets: number;
+    comments: number;
+  };
+
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  reaction: 'likes, comment etc';
 }
