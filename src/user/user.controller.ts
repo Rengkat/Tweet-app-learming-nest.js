@@ -19,30 +19,28 @@ import { Repository } from 'typeorm';
 
 @Controller('users')
 export class UserController {
-  constructor(
-    // @InjectRepository(User) private userRepository: Repository<User>,
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @Post()
-  createUser(
-    @Body()
-    userDto: createUserDto,
-  ) {}
+  async createUser(@Body() userDto: createUserDto) {
+    return this.userService.createUser(userDto);
+  }
 
   @Get()
-  getUsers(
+  async getUsers(
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
-    @Query('name') name: string,
-    @Query('age', ParseIntPipe) param: number,
-  ) {}
+  ) {
+    return this.userService.getUsers();
+  }
 
   @Get(':id')
-  getUser(@Param('id', ParseIntPipe) id: number) {}
+  async getUser(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.getUser(id);
+  }
 
   @Delete(':id')
-  deleteUser(@Param('id', ParseIntPipe) id: number) {
-    this.deleteUser(id);
+  async deleteUser(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.delete(id);
   }
 }
