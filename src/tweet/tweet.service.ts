@@ -25,7 +25,8 @@ public async createTweet(tweet: createTweetDto) {
 
   public async getUserTweets(id: number) {
   return await this.tweetRepository.find({
-    where: {user:{id} }
+    where: {user:{id} },
+    relations:{user:true}
   });
 }
   updateTweet() {}

@@ -9,7 +9,8 @@ export class HashTag{
     @Column({
         unique:true,
         type:'varchar',
-        length:20
+        length:20,
+        nullable:false
     })
     name:string
 
