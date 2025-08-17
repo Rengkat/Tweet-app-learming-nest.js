@@ -43,8 +43,8 @@ export class UserService {
     });
   }
 
-  getUser(id: number) {
-    return this.userRepository.findBy({
+  public async getUser(id: number) {
+    return await this.userRepository.findOneBy({
       id,
     });
   }
@@ -55,7 +55,7 @@ export class UserService {
     this.userRepository.delete(id);
 
     // delete the profile
-    this.profileRepository.delete(user.profile.id);
+    // this.profileRepository.delete(user.profile.id);
     return { deleted: true };
   }
 }

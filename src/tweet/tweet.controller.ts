@@ -1,11 +1,14 @@
-import { Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Patch, Post } from '@nestjs/common';
 import { TweetService } from './tweet.service';
+import { createTweetDto } from './dtos/createTweetDto';
 
 @Controller('tweet')
 export class TweetController {
-  constructor(private readonly tweet: TweetService) {}
+  constructor(private readonly tweetService: TweetService) {}
   @Post()
-  createTweet() {}
+  createTweet(@Body() tweetData:createTweetDto) {
+    return this.tweetService.createTweet(tweetData)
+  }
 
   @Get()
   getTweets() {}
