@@ -1,10 +1,13 @@
 import { IsOptional } from 'class-validator';
+import { HashTag } from 'src/hashtag/hastag.entity';
 import { User } from 'src/user/user.Entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -14,7 +17,7 @@ import {
 @Entity()
 export class Tweets {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column({
     nullable: false,
@@ -26,6 +29,10 @@ export class Tweets {
   @ManyToOne(() => User, (user) => user.tweets)
   // @JoinColumn() no need of joint column
   user: User;
+
+  @ManyToMany(()=>HashTag)
+  @JoinTable()
+  hashtags?:HashTag[]
 
   @Column({
     nullable: true,
