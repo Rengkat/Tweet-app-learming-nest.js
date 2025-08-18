@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { HashTag } from './hastag.entity';
 import { In, Repository } from 'typeorm';
 import { CreateHashTagDto } from './dtos/creatHashTagDto';
+import { UpdateHastagDto } from './dtos/updateHashtag.dto';
 
 @Injectable()
 export class HashtagService {
@@ -17,4 +18,6 @@ export class HashtagService {
         where:{id: In(hashtag)}
     })
    }
+
+  
 }
