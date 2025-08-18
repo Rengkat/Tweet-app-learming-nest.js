@@ -51,5 +51,12 @@ let hashtags= await this.hashtagService.findHashtag(tweet.hashtags ??[])
 
   await this.tweetRepository.save(tweet)
   }
-  deleteTweet() {}
+
+ public async deleteTweet(id:number) {
+  this.tweetRepository.delete({
+    id
+  })
+  return {deleted:true, id}
+ }
 }
+// 3146405087- Daniel Nwaozuru Ikechukukwu
