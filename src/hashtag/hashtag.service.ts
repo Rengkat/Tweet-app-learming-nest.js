@@ -18,6 +18,9 @@ export class HashtagService {
         where:{id: In(hashtag)}
     })
    }
-
+public async deleteHashtag(id:number){
+    await this.hastagRepository.delete({id})
+    return {deleted:true}
+}
   
 }

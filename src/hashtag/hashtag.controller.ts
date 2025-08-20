@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { CreateHashTagDto } from './dtos/creatHashTagDto';
 import { HashtagService } from './hashtag.service';
 
@@ -8,5 +8,10 @@ export class HashtagController {
     @Post()
     public createNewHashtag (@Body() hastag:CreateHashTagDto){
 this.hastagService.createHastag(hastag)
+    }
+
+    @Delete(':id')
+    deleteHashtag(@Param('id', ParseIntPipe) id:number){
+        return this.hastagService.deleteHashtag(id)
     }
 }
