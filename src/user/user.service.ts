@@ -6,12 +6,14 @@ import { User } from './user.Entity';
 import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 import { createUserDto } from './createUser.dto';
 import { Profile } from 'src/profile/profile.Entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-    @InjectRepository(Profile) private profileRepository: Repository<Profile>,
+    //using the .env in any service
+    private readonly configService:ConfigService
   ) {}
 
   public async createUser(user: createUserDto) {
@@ -35,6 +37,8 @@ export class UserService {
   }
 
   getUsers() {
+    const enveriment= this.configService.get<string>('ENV_MODE')
+    console.log(enveriment) //how to read or use the .env values
     return this.userRepository.find({
       //can enable eager loading for all related data
       // relations: {

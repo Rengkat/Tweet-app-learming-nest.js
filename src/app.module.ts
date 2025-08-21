@@ -7,6 +7,7 @@ import { TweetModule } from './tweet/tweet.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HashtagModule } from './hashtag/hashtag.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -14,6 +15,10 @@ import { HashtagModule } from './hashtag/hashtag.module';
     ProfileModule,
     TweetModule,
     AuthModule,
+    ConfigModule.forRoot({
+      isGlobal:true, // to use the .env anywhere in the app
+      envFilePath:'.env' //when no set, it will look for it by default in the root folder
+    }),
     TypeOrmModule.forRootAsync({
       imports: [],
       inject: [],
