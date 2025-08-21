@@ -30,7 +30,7 @@ export class Tweets {
   // @JoinColumn() no need of joint column
   user: User;
 
-  @ManyToMany(()=>HashTag)
+  @ManyToMany(()=>HashTag, (hashtag)=>hashtag.tweets)
   @JoinTable()
   hashtags?:HashTag[]
 

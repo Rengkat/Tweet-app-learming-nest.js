@@ -14,4 +14,8 @@ this.hastagService.createHastag(hastag)
     deleteHashtag(@Param('id', ParseIntPipe) id:number){
         return this.hastagService.deleteHashtag(id)
     }
+    @Delete(':id')
+    softDeleteHashtag(@Param('id', ParseIntPipe) id:number){
+        return this.hastagService.deleteHashtag(id)
+    }
 }

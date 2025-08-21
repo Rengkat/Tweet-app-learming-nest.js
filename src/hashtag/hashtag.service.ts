@@ -22,5 +22,9 @@ public async deleteHashtag(id:number){
     await this.hastagRepository.delete({id})
     return {deleted:true}
 }
+public async softDeleteHashtag(id:number){
+    await this.hastagRepository.softDelete({id})
+    return {deleted:true}
+}
   
 }
