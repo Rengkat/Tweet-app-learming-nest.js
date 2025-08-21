@@ -7,8 +7,8 @@ import { TweetModule } from './tweet/tweet.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HashtagModule } from './hashtag/hashtag.module';
-import { ConfigModule } from '@nestjs/config';
-
+import { ConfigModule, ConfigService } from '@nestjs/config';
+const ENV = process.env.NODE_ENV
 @Module({
   imports: [
     UserModule,
@@ -17,15 +17,15 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
     ConfigModule.forRoot({
       isGlobal:true, // to use the .env anywhere in the app
-      envFilePath:'.env' //when no set, it will look for it by default in the root folder
-    }),
+      envFilePath:!ENV? '.env' : `.env${ENV}` //when no set, it will look for it by default in the root folder
+    })
     TypeOrmModule.forRootAsync({
-      imports: [],
-      inject: [],
-      useFactory: () => ({
-        type: 'postgres',
+      imports: [ConfigModule],// set this cos typeORM dont have access to the .env
+      inject: [ConfigService],
+      useFactory: (configService:ConfigService) => ({
+        type: configService.get('DB_TYPE'),
         host: 'localhost',
-        port: 5432,
+        port: configService.get('PORT'),
         username: 'your_username',
         password: 'your_password',
         database: 'your_db_name',
