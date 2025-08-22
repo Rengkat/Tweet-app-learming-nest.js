@@ -17,21 +17,22 @@ const ENV = process.env.NODE_ENV
     AuthModule,
     ConfigModule.forRoot({
       isGlobal:true, // to use the .env anywhere in the app
-      envFilePath:!ENV? '.env' : `.env${ENV}` //when no set, it will look for it by default in the root folder
+      envFilePath:!ENV? '.env' : `.env.${ENV.trim()}` //when no set, it will look for it by default in the root folder
     })
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],// set this cos typeORM dont have access to the .env
       inject: [ConfigService],
       useFactory: (configService:ConfigService) => ({
         type: configService.get('DB_TYPE'),
-        host: 'localhost',
+        host: configService.get('HOST'),
         port: configService.get('PORT'),
-        username: 'your_username',
-        password: 'your_password',
-        database: 'your_db_name',
+        username: configService.get('USER_NAME'),
+        password:configService.get('PASSWORD'),
+        database: configService.get('DB_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true,
+        synchronize: configService.get('SYNC_DB'),
         logging: true,
+      
       }),
     }),
     HashtagModule,
