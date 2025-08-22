@@ -1,13 +1,6 @@
-export const appConfig =()=>{
-return {
-    envirment:{}
-    database:{
-        host:process.env.DB_HOST || 'localhost',
-        port: parseInt(process.env.DB_PORT) ||5432,
-        name:process.env.DB_NAME,
-        username: process.env.DB_USERNAME,
-        password:process.env.DB_PASSWORD,
-        syncronize:process.env.SYNC_DB ==='true'? true: false
-    }
-}
-}
+import { registerAs } from "@nestjs/config"
+
+export default registerAs ('appConfig',()=>({
+    envirment:process.env.NODE_ENV||'production'
+}))
+//dvantages of using custom config. 1. we have access to process.env and we can set default values, when want segrate the conf in diff config in deff module

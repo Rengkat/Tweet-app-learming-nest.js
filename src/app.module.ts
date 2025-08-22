@@ -8,6 +8,8 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HashtagModule } from './hashtag/hashtag.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import  appConfig  from 'config/app.config';
+import databaseConfig from 'config/database.config';
 const ENV = process.env.NODE_ENV
 @Module({
   imports: [
@@ -17,18 +19,20 @@ const ENV = process.env.NODE_ENV
     AuthModule,
     ConfigModule.forRoot({
       isGlobal:true, // to use the .env anywhere in the app
-      envFilePath:!ENV? '.env' : `.env.${ENV.trim()}` //when no set, it will look for it by default in the root folder
+      envFilePath:!ENV? '.env' : `.env.${ENV.trim()}`, //when no set, it will look for it by default in the root folder
+      // 
+      load:[appConfig] .//at. load our config file
     })
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],// set this cos typeORM dont have access to the .env
+      imports: [ConfigModule, databaseConfig],// set this cos typeORM dont have access to the .env
       inject: [ConfigService],
-      useFactory: (configService:ConfigService) => ({
-        type: configService.get('DB_TYPE'),
-        host: configService.get('HOST'),
-        port: configService.get('PORT'),
-        username: configService.get('USER_NAME'),
-        password:configService.get('PASSWORD'),
-        database: configService.get('DB_NAME'),
+      useFactory: (configService:ConfigService) => ({ // we asre using database.something, simply in the appConfig, there is databse as object
+        type: configService.get('database.type'),
+        host: configService.get('databse.host'),
+        port: configService.get('databse.port'),
+        username: configService.get('databse.username'),
+        password:configService.get('databse.password'),
+        database: configService.get('databse.name'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: configService.get('SYNC_DB'),
         logging: true,
