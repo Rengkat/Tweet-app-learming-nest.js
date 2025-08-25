@@ -64,9 +64,19 @@ export class UserService {
   }
 
   public async getUser(id: number) {
-    return await this.userRepository.findOneBy({
+    const user = await this.userRepository.findOneBy({
       id,
     });
+    if (!user) {
+      // throw new HttpException('respose- string or object', 'status', 'option')
+      throw new HttpException({
+        status:HttpStatus.NOT_FOUND,
+        error:'The user with this ID is not found',
+        table:'user'
+      },HttpStatus.NOT_FOUND,{
+        description:'Everything written here will not be seen by user both fellow developer for debugging. Sensitive data can be added'
+      })
+    }
   }
   async delete(id: number) {
     //find the user
