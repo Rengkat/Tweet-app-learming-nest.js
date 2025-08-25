@@ -17,7 +17,8 @@ export class UserService {
   ) {}
 
   public async createUser(user: createUserDto) {
-    const existUser = await this.userRepository.findOne({
+    try {
+      const existUser = await this.userRepository.findOne({
       where: { email: user.email },
     });
     if (existUser) {
@@ -34,6 +35,9 @@ export class UserService {
     // user.profile = profile;
     const newUser = this.userRepository.create(user);
     return await this.userRepository.save(newUser);
+    } catch (error) {
+      
+    }
   }
 
   getUsers() {
@@ -47,10 +51,16 @@ export class UserService {
       // },
     });
     } catch (error) {
-throw new RequestTimeoutException('Sn error has occured',{
+      if (error.code==='ECONNREFUSED') {
+        throw new RequestTimeoutException('Sn error has occured',{
   description:' Could not connect to DB'
 })
+      }
     }
+ if (error.code==='23505') {
+  throw new BadRequestException("There is doblucate value for the user");
+  
+ }
   }
 
   public async getUser(id: number) {
