@@ -22,7 +22,7 @@ export class UserService {
       where: { email: user.email },
     });
     if (existUser) {
-    throw new BadRequestException('User not found')
+    throw new BadRequestException('User aleady exist')
     }
     //create profile and the user
     user.profile = user.profile ?? {}; // if user profile is null, set it to an empty array
@@ -36,7 +36,7 @@ export class UserService {
     const newUser = this.userRepository.create(user);
     return await this.userRepository.save(newUser);
     } catch (error) {
-      
+      throw error // will catch any error in the try block
     }
   }
 
