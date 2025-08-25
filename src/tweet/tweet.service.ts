@@ -34,8 +34,9 @@ let hashtags= await this.hashtagService.findHashtag(tweet.hashtags ??[])
   public async getUserTweets(id: number) {
   return await this.tweetRepository.find({
     where: {user:{id} },
-    relations:{user:true}
+    relations:{user:true, hashtags:true}
   });
+  
 }
   public async updateHashtag(updateTweet:UpdateTweetDto){
     //find all hashtags

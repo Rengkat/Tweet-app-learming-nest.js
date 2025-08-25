@@ -16,6 +16,8 @@ import { createUserDto } from './createUser.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.Entity';
 import { Repository } from 'typeorm';
+import { PaginationQueryDto } from 'src/common/PaginationQueryDto';
+import { skip } from 'node:test';
 
 @Controller('users')
 export class UserController {
@@ -28,10 +30,12 @@ export class UserController {
 
   @Get()
   async getUsers(
-    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
-    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('pagination') paginationQueryDto: PaginationQueryDto,
   ) {
-    return this.userService.getUsers();
+    return this.userService.getUsers({
+    skip:(paginationQueryDto.page - 1)*paginationQueryDto.limit
+    
+    });
   }
 
   @Get(':id')

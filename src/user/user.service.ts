@@ -1,4 +1,4 @@
-import { Body, Injectable, Post } from '@nestjs/common';
+import { BadRequestException, Body, HttpException, HttpStatus, Injectable, Post, RequestTimeoutException } from '@nestjs/common';
 // import { User } from './user.inference';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -21,7 +21,7 @@ export class UserService {
       where: { email: user.email },
     });
     if (existUser) {
-      throw new Error('User already exist');
+    throw new BadRequestException('User not found')
     }
     //create profile and the user
     user.profile = user.profile ?? {}; // if user profile is null, set it to an empty array
@@ -37,7 +37,8 @@ export class UserService {
   }
 
   getUsers() {
-    const enveriment= this.configService.get<string>('ENV_MODE')
+    try {
+      const enveriment= this.configService.get<string>('ENV_MODE')
     console.log(enveriment) //how to read or use the .env values
     return this.userRepository.find({
       //can enable eager loading for all related data
@@ -45,6 +46,11 @@ export class UserService {
       //   profile: true,
       // },
     });
+    } catch (error) {
+throw new RequestTimeoutException('Sn error has occured',{
+  description:' Could not connect to DB'
+})
+    }
   }
 
   public async getUser(id: number) {
