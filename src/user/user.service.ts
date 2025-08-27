@@ -7,6 +7,7 @@ import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 import { createUserDto } from './createUser.dto';
 import { Profile } from 'src/profile/profile.Entity';
 import { ConfigService } from '@nestjs/config';
+import { UserAlreadyExistEception } from 'src/customExceptions/userAlreadyExist.exception';
 
 @Injectable()
 export class UserService {
@@ -22,7 +23,8 @@ export class UserService {
       where: { email: user.email },
     });
     if (existUser) {
-    throw new BadRequestException('User aleady exist')
+    // throw new BadRequestException('User aleady exist')
+    throw new UserAlreadyExistEception('Email',user.email)
     }
     //create profile and the user
     user.profile = user.profile ?? {}; // if user profile is null, set it to an empty array
@@ -76,6 +78,7 @@ export class UserService {
       },HttpStatus.NOT_FOUND,{
         description:'Everything written here will not be seen by user both fellow developer for debugging. Sensitive data can be added'
       })
+      return user
     }
   }
   async delete(id: number) {
