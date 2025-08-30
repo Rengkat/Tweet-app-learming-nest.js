@@ -10,7 +10,12 @@ import authConfig from './config/authConfig';
 @Module({
   controllers: [AuthController],
   providers: [AuthService],
-  imports: [forwardRef(()=>UserModule), TypeOrmModule.forFeature([Auth]), ConfigModule.forFeature(authConfig)],
+  imports: [
+    // forwardRef(()=>UserModule), fot circular dependecies 
+    UserModule,
+    forwardRef(()=>UserModule),
+     TypeOrmModule.forFeature([Auth]),
+      ConfigModule.forFeature(authConfig)],
   exports: [AuthService],
 })
 export class AuthModule {}

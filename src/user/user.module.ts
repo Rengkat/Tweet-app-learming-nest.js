@@ -15,7 +15,7 @@ import { PaginationModule } from 'src/common/pagination/pagination.module';
   imports: [
     TweetModule,
     ProfileModule,
-    AuthModule,
+    // AuthModule,
     PaginationModule, //for pagination
     TypeOrmModule.forFeature([User]),
   ],

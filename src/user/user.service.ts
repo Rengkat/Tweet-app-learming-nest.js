@@ -10,6 +10,7 @@ import { ConfigService } from '@nestjs/config';
 import { UserAlreadyExistEception } from 'src/customExceptions/userAlreadyExist.exception';
 import { PaginationProvider } from 'src/common/pagination/pagination.provider';
 import { PaginationQueryDto } from 'src/common/PaginationQueryDto';
+import { PaginationInterface } from 'src/common/pagination/paginated.interface';
 
 @Injectable()
 export class UserService {
@@ -24,7 +25,8 @@ export class UserService {
   public async createUser(user: createUserDto) {
     try {
       const existUser = await this.userRepository.findOne({
-      where: { email: user.email },
+      // where: { email: user.email }, taken to pagination
+      // relations:{profile:true, tweets:true} be taken to pagination module
     });
     if (existUser) {
     // throw new BadRequestException('User aleady exist')
@@ -46,13 +48,15 @@ export class UserService {
     }
   }
 
-  getUsers(paginationQuery:PaginationQueryDto) {
+  public async getUsers(paginationQuery:PaginationQueryDto):Promise<PaginationInterface<User>> {
     try {
       // const enveriment= this.configService.get<string>('ENV_MODE')
     // console.log(enveriment) how to read or use the .env values
-    return this.paginationProvider.paginationQuery(
+  return await this.paginationProvider.paginationQuery(
       paginationQuery,
-      this.userRepository
+      this.userRepository,
+      null,
+      ['profile']
     )
     } catch (error) {
       if (error.code==='ECONNREFUSED') {

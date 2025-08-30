@@ -23,10 +23,10 @@ import { skip } from 'node:test';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  async createUser(@Body() userDto: createUserDto) {
-    return this.userService.createUser(userDto);
-  }
+  // @Post()
+  // async createUser(@Body() userDto: createUserDto) {
+  //   return this.userService.createUser(userDto);
+  // }
 
   @Get()
   async getUsers(

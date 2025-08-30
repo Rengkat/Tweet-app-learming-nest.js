@@ -6,7 +6,7 @@
 export interface PaginationInterface<T>{
     data:T[],
     meta:{
-        itemPerFage:number;
+        itemPerPage:number;
         totalItems:number;
         currentPage:number;
         totalPages:number;
