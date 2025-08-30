@@ -10,6 +10,7 @@ import { UpdateTweetDto } from './dtos/updateTweet.dto';
 import { PaginationQueryDto } from 'src/common/PaginationQueryDto';
 import { UserAlreadyExistEception } from 'src/customExceptions/userAlreadyExist.exception';
 import { notFoundException } from 'src/customExceptions/notFoundException';
+import { GetTweetDto } from './dtos/getTweetQueryDto';
 
 @Injectable()
 export class TweetService {
@@ -34,7 +35,7 @@ let hashtags= await this.hashtagService.findHashtag(tweet.hashtags ??[])
     return this.tweetRepository.find();
   }
 
-  public async getUserTweets(id: number, quepaginationQueryry:PaginationQueryDto) {
+  public async getUserTweets(id: number, getTweetDto:GetTweetDto) {
   const user = await this.userService.getUser(id)
   if (!user) {
     throw new notFoundException('user')
@@ -42,8 +43,8 @@ let hashtags= await this.hashtagService.findHashtag(tweet.hashtags ??[])
     return await this.tweetRepository.find({
     where: {user:{id} },
     relations:{user:true, hashtags:true},
-    skip:(quepaginationQueryry.page -1)* quepaginationQueryry.limit,
-    take:quepaginationQueryry.limit
+    skip:(getTweetDto.page -1)* getTweetDto.limit,
+    take:getTweetDto.limit
   });
   
 }
