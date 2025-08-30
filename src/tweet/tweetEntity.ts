@@ -26,11 +26,11 @@ export class Tweets {
   })
   post: string;
 
-  @ManyToOne(() => User, (user) => user.tweets)
+  @ManyToOne(() => User, (user) => user.tweets, {eager:true})
   // @JoinColumn() no need of joint column
   user: User;
 
-  @ManyToMany(()=>HashTag, (hashtag)=>hashtag.tweets)
+  @ManyToMany(()=>HashTag, (hashtag)=>hashtag.tweets, {eager:true})
   @JoinTable()
   hashtags?:HashTag[]
 

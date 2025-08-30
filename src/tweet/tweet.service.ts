@@ -35,16 +35,19 @@ let hashtags= await this.hashtagService.findHashtag(tweet.hashtags ??[])
     return this.tweetRepository.find();
   }
 
-  public async getUserTweets(id: number, getTweetDto:GetTweetDto) {
+  public async getUserTweets(id: number, pagination:PaginationQueryDto) {
   const user = await this.userService.getUser(id)
   if (!user) {
     throw new notFoundException('user')
   }
     return await this.tweetRepository.find({
     where: {user:{id} },
-    relations:{user:true, hashtags:true},
-    skip:(getTweetDto.page -1)* getTweetDto.limit,
-    take:getTweetDto.limit
+    // relations:{user:true, hashtags:true},
+    // INTERSECTION
+    // skip:(getTweetDto.page -1)* getTweetDto.limit,
+    // take:getTweetDto.limit
+    skip:(pagination.page -1)* pagination.limit,
+    take:pagination.limit
   });
   
 }

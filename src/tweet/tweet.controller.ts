@@ -23,10 +23,11 @@ export class TweetController {
 
   @Get(':userId')
   getUserTweets(@Param('userId', ParseIntPipe) userId:number,
-  @Query() getTweetDto: GetTweetDto
+  // @Query() getTweetDto: GetTweetDto
+  @Query() pagination: PaginationQueryDto
 ) {
    
-    return this.tweetService.getUserTweets(userId,getTweetDto)
+    return this.tweetService.getUserTweets(userId,pagination)
   }
 
   @Patch(':tweetId')
