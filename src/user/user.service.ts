@@ -8,13 +8,17 @@ import { createUserDto } from './createUser.dto';
 import { Profile } from 'src/profile/profile.Entity';
 import { ConfigService } from '@nestjs/config';
 import { UserAlreadyExistEception } from 'src/customExceptions/userAlreadyExist.exception';
+import { PaginationProvider } from 'src/common/pagination/pagination.provider';
+import { PaginationQueryDto } from 'src/common/PaginationQueryDto';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+
     //using the .env in any service
-    private readonly configService:ConfigService
+    private readonly configService:ConfigService,
+    private readonly paginationProvider:PaginationProvider
   ) {}
 
   public async createUser(user: createUserDto) {
@@ -42,17 +46,14 @@ export class UserService {
     }
   }
 
-  getUsers() {
+  getUsers(paginationQuery:PaginationQueryDto) {
     try {
       // const enveriment= this.configService.get<string>('ENV_MODE')
     // console.log(enveriment) how to read or use the .env values
-    return this.userRepository.find({
-      //can enable eager loading for all related data
-      // relations: {
-      //   profile: true,
-      // },
-      
-    });
+    return this.paginationProvider.paginationQuery(
+      paginationQuery,
+      this.userRepository
+    )
     } catch (error) {
       if (error.code==='ECONNREFUSED') {
         throw new RequestTimeoutException('Sn error has occured',{

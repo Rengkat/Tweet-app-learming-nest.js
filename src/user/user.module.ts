@@ -6,6 +6,7 @@ import { ProfileModule } from 'src/profile/profile.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.Entity';
+import { PaginationModule } from 'src/common/pagination/pagination.module';
 
 @Module({
   controllers: [UserController],
@@ -15,6 +16,7 @@ import { User } from './user.Entity';
     TweetModule,
     ProfileModule,
     AuthModule,
+    PaginationModule, //for pagination
     TypeOrmModule.forFeature([User]),
   ],
 })

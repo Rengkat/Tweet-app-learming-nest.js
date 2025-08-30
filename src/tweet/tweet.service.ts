@@ -11,6 +11,7 @@ import { PaginationQueryDto } from 'src/common/PaginationQueryDto';
 import { UserAlreadyExistEception } from 'src/customExceptions/userAlreadyExist.exception';
 import { notFoundException } from 'src/customExceptions/notFoundException';
 import { GetTweetDto } from './dtos/getTweetQueryDto';
+import { PaginationProvider } from 'src/common/pagination/pagination.provider';
 
 @Injectable()
 export class TweetService {
@@ -19,6 +20,7 @@ export class TweetService {
     private readonly hashtagService:HashtagService,
     @InjectRepository(Tweets)
     private readonly tweetRepository: Repository<Tweets>,
+    private readonly paginationQueryProvider:PaginationProvider
   ) {}
 public async createTweet(tweet: createTweetDto) {
   const user = await this.userService.getUser(tweet.userId);
@@ -35,20 +37,26 @@ let hashtags= await this.hashtagService.findHashtag(tweet.hashtags ??[])
     return this.tweetRepository.find();
   }
 
-  public async getUserTweets(id: number, pagination:PaginationQueryDto) {
+  public async getUserTweets(id: number, paginationQueryDto:PaginationQueryDto) {
   const user = await this.userService.getUser(id)
   if (!user) {
     throw new notFoundException('user')
   }
-    return await this.tweetRepository.find({
-    where: {user:{id} },
+  return await this.paginationQueryProvider.paginationQuery(
+    paginationQueryDto,
+    this.tweetRepository,
+    {user:{id}}
+  )
+  //THIS IS WITHOUT USING PAGINATION PROVIDER
+    // return await this.tweetRepository.find({
+    // where: {user:{id} },
     // relations:{user:true, hashtags:true},
     // INTERSECTION
     // skip:(getTweetDto.page -1)* getTweetDto.limit,
     // take:getTweetDto.limit
-    skip:(pagination.page -1)* pagination.limit,
-    take:pagination.limit
-  });
+  //   skip:(pagination.page -1)* pagination.limit,
+  //   take:pagination.limit
+  // });
   
 }
   public async updateHashtag(updateTweet:UpdateTweetDto){

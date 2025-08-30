@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PaginationQueryDto } from '../PaginationQueryDto';
-import { FindOptionsWhere, ObjectLiteral, Repository } from 'typeorm';
+import { FindManyOptions, FindOptionsWhere, ObjectLiteral, Repository } from 'typeorm';
 // we are creating Module and Interface to be able to 
 // use pagination in all the module. I t will be like a cetral place
 
@@ -14,9 +14,13 @@ export class PaginationProvider {
         where?:FindOptionsWhere<T> //to use where for query if present
     ){
         //we are using repository whic is a geral one
-        return await repository.find({
+        const findOptions:FindManyOptions<T>={
             skip:(paginationQueryDto.page -1)* paginationQueryDto.limit,
             take:paginationQueryDto.limit
-          });
+        }
+        if (where) {
+            findOptions.where=where
+        }
+        return await repository.find(findOptions)
     }
 }

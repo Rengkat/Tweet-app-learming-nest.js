@@ -30,9 +30,9 @@ export class UserController {
 
   @Get()
   async getUsers(
-    @Query('pagination') paginationQueryDto: PaginationQueryDto,
+    @Query() paginationQueryDto: PaginationQueryDto,
   ) {
-    return this.userService.getUsers();
+    return this.userService.getUsers(paginationQueryDto);
   }
 
   @Get(':id')
