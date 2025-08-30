@@ -44,13 +44,14 @@ export class UserService {
 
   getUsers() {
     try {
-      const enveriment= this.configService.get<string>('ENV_MODE')
-    console.log(enveriment) //how to read or use the .env values
+      // const enveriment= this.configService.get<string>('ENV_MODE')
+    // console.log(enveriment) how to read or use the .env values
     return this.userRepository.find({
       //can enable eager loading for all related data
       // relations: {
       //   profile: true,
       // },
+      
     });
     } catch (error) {
       if (error.code==='ECONNREFUSED') {

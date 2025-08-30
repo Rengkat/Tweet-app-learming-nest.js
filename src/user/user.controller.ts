@@ -32,10 +32,7 @@ export class UserController {
   async getUsers(
     @Query('pagination') paginationQueryDto: PaginationQueryDto,
   ) {
-    return this.userService.getUsers({
-    skip:(paginationQueryDto.page - 1)*paginationQueryDto.limit
-    
-    });
+    return this.userService.getUsers();
   }
 
   @Get(':id')
